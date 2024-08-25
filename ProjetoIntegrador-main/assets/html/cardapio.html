@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/assets/css/cardapio.css" />
+
+<title>Cardápio - SIH</title>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: #f0f0f0;
+    }
+
+    header.header-bg {
+        background: #ffffff;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        position: relative;
+    }
+
+    .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .menu-image {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .main-title {
+        font-size: 2.5em;
+        color: #333;
+        margin: 10px 0;
+    }
+
+    .sub-title {
+        font-size: 1.2em;
+        color: #666;
+    }
+
+    .date-span {
+        margin-top: 10px;
+    }
+
+    .menu-title {
+        text-align: center;
+        font-size: 2em;
+        margin: 20px 0;
+        color: #333;
+    }
+
+    .tab-links {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .tab-link {
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 0 5px;
+        font-size: 1.2em;
+    }
+
+    .tab-link.active {
+        background: #ff5722;
+        color: #ffffff;
+        border-color: #ff5722;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .menu-grid, .beverages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .menu-item, .beverages-item {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s;
+        text-align: center;
+    }
+
+    .menu-item:hover, .beverages-item:hover {
+        transform: translateY(-10px);
+    }
+
+    .menu-item-image, .beverages-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .item-title, .beverages-name {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #333;
+        margin: 10px 0;
+    }
+
+    .item-description, .beverages-detail {
+        font-size: 1em;
+        color: #666;
+        padding: 0 10px;
+    }
+
+    .item-controls, .beverages-controls {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .add-to-cart-btn {
+        background: #ff5722;
+        color: #ffffff;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+    }
+
+    .add-to-cart-btn:hover {
+        background: #e64a19;
+    }
+
+    footer.footer {
+        background: #333;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+        position: relative;
+        margin-top: 40px; /* Adiciona espaço acima do rodapé */
+    }
+
+    .cart-btn {
+        background: #ff5722;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1.2em;
+        margin: 20px; /* Muda o espaçamento ao redor do botão */
+        position: relative; /* Remove a posição fixa */
+        z-index: 1000;
+    }
+
+    .cart-btn:hover {
+        background: #e64a19;
+    }
+
+    .cart-icon {
+        margin-left: 10px;
+    }
+
+    .cart-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .cart-modal-content {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        max-width: 500px;
+        width: 100%;
+    }
+
+    .modal-title {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    .modal-subtitle {
+        font-size: 1.2em;
+        margin: 20px 0;
+    }
+
+    .address-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1em;
+    }
+
+    .text-red-500 {
+        color: #f44336;
+    }
+
+    .modal-actions {
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .modal-actions button {
+        background: #ff5722;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+        margin-left: 10px;
+    }
+
+    .modal-actions button:hover {
+        background: #e64a19;
+    }
+
+    .quantity-select {
+        margin: 10px 0;
+    }
+
+    .quantity-select label {
+        margin-right: 10px;
+    }
+
+    .quantity-select select {
+        padding: 5px;
+        font-size: 1em;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .cart-item-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .cart-item-details {
+        flex: 1;
+    }
+
+    .cart-item-details h4 {
+        margin: 0;
+    }
+
+    .cart-item-details p {
+        margin: 5px 0;
+    }
+</style>
+
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header-bg">
+    <div class="header-content">
+        <img src="/assets/images/menu.jpg" alt="" class="menu-image"/>
+        <h1 class="main-title">Cardápio SIH</h1>
+        <span class="sub-title">Faça o seu pedido!</span>
+        <div class="date-span" id="date-span">
+            <span class="sub-title">06:00 às 22:00</span>
+        </div>
+        <button id="cart-btn" class="cart-btn">
+            Carrinho (<span id="cart-counter">0</span>)
+            <i class="fa fa-cart-plus cart-icon"></i>
+        </button>
+    </div>
+</header>
+<!-- FIM DO HEADER -->
+
+<!-- MENU TABS -->
+<div class="tab-links">
+    <div class="tab-link active" onclick="openTab('pratos')">Pratos</div>
+    <div class="tab-link" onclick="openTab('sobremesas')">Sobremesas</div>
+    <div class="tab-link" onclick="openTab('bebidas')">Bebidas</div>
+</div>
+
+<!-- MENU CONTENT -->
+<div class="tab-content active" id="pratos">
+    <h2 class="menu-title">Pratos</h2>
+    <div class="menu-grid">
+        <!-- 8 Pratos -->
+        <div class="menu-item">
+            <img src="/assets/images/prato1.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Frango Grelhado</div>
+            <p class="item-description">Frango grelhado com legumes.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-frango">Quantidade:</label>
+                    <select id="quantity-frango">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Frango Grelhado', 'Frango grelhado com legumes', 'prato1.jpg', document.getElementById('quantity-frango').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/prato2.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Feijoada</div>
+            <p class="item-description">Feijoada completa com arroz.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-feijoada">Quantidade:</label>
+                    <select id="quantity-feijoada">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Feijoada', 'Feijoada completa com arroz', 'prato2.jpg', document.getElementById('quantity-feijoada').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/prato3.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Lasanha de Queijo</div>
+            <p class="item-description">Lasanha de queijo com molho branco.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-lasanha">Quantidade:</label>
+                    <select id="quantity-lasanha">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Lasanha de Queijo', 'Lasanha de queijo com molho branco', 'prato3.jpg', document.getElementById('quantity-lasanha').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/prato4.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Salada Caesar</div>
+            <p class="item-description">Salada Caesar com frango.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-salada">Quantidade:</label>
+                    <select id="quantity-salada">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Salada Caesar', 'Salada Caesar com frango', 'prato4.jpg', document.getElementById('quantity-salada').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/prato5.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Bife à Parmegiana</div>
+            <p class="item-description">Bife à parmegiana com arroz e batata.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-bife">Quantidade:</label>
+                    <select id="quantity-bife">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Bife à Parmegiana', 'Bife à parmegiana com arroz e batata', 'prato5.jpg', document.getElementById('quantity-bife').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/prato6.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Peixe Assado</div>
+            <p class="item-description">Peixe assado com batatas.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-peixe">Quantidade:</label>
+                    <select id="quantity-peixe">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Peixe Assado', 'Peixe assado com batatas', 'prato6.jpg', document.getElementById('quantity-peixe').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/prato7.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Strogonoff de Carne</div>
+            <p class="item-description">Strogonoff de carne com arroz e batata palha.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-strogonoff">Quantidade:</label>
+                    <select id="quantity-strogonoff">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Strogonoff de Carne', 'Strogonoff de carne com arroz e batata palha', 'prato7.jpg', document.getElementById('quantity-strogonoff').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/prato8.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Risoto de Camarão</div>
+            <p class="item-description">Risoto de camarão com temperos especiais.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-risoto">Quantidade:</label>
+                    <select id="quantity-risoto">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Risoto de Camarão', 'Risoto de camarão com temperos especiais', 'prato8.jpg', document.getElementById('quantity-risoto').value)">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab-content" id="sobremesas">
+    <h2 class="menu-title">Sobremesas</h2>
+    <div class="menu-grid">
+        <!-- 8 Sobremesas -->
+        <div class="menu-item">
+            <img src="/assets/images/sobremesa1.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Pudim</div>
+            <p class="item-description">Pudim de leite condensado.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-pudim">Quantidade:</label>
+                    <select id="quantity-pudim">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Pudim', 'Pudim de leite condensado', 'sobremesa1.jpg', document.getElementById('quantity-pudim').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/sobremesa2.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Torta de Limão</div>
+            <p class="item-description">Torta de limão com cobertura de merengue.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-torta">Quantidade:</label>
+                    <select id="quantity-torta">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Torta de Limão', 'Torta de limão com cobertura de merengue', 'sobremesa2.jpg', document.getElementById('quantity-torta').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/sobremesa3.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Brigadeiro</div>
+            <p class="item-description">Brigadeiro tradicional.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-brigadeiro">Quantidade:</label>
+                    <select id="quantity-brigadeiro">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Brigadeiro', 'Brigadeiro tradicional', 'sobremesa3.jpg', document.getElementById('quantity-brigadeiro').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/sobremesa4.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Mousse de Maracujá</div>
+            <p class="item-description">Mousse de maracujá com cobertura de chocolate.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-mousse">Quantidade:</label>
+                    <select id="quantity-mousse">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Mousse de Maracujá', 'Mousse de maracujá com cobertura de chocolate', 'sobremesa4.jpg', document.getElementById('quantity-mousse').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/sobremesa5.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Cheesecake de Morango</div>
+            <p class="item-description">Cheesecake com cobertura de morango.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-cheesecake">Quantidade:</label>
+                    <select id="quantity-cheesecake">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Cheesecake de Morango', 'Cheesecake com cobertura de morango', 'sobremesa5.jpg', document.getElementById('quantity-cheesecake').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/sobremesa6.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Bolo de Cenoura</div>
+            <p class="item-description">Bolo de cenoura com cobertura de chocolate.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-bolo">Quantidade:</label>
+                    <select id="quantity-bolo">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Bolo de Cenoura', 'Bolo de cenoura com cobertura de chocolate', 'sobremesa6.jpg', document.getElementById('quantity-bolo').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/sobremesa7.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Sorvete</div>
+            <p class="item-description">Sorvete de baunilha com calda de chocolate.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-sorvete">Quantidade:</label>
+                    <select id="quantity-sorvete">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Sorvete', 'Sorvete de baunilha com calda de chocolate', 'sobremesa7.jpg', document.getElementById('quantity-sorvete').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="/assets/images/sobremesa8.jpg" alt="" class="menu-item-image"/>
+            <div class="item-title">Brownie</div>
+            <p class="item-description">Brownie de chocolate com nozes.</p>
+            <div class="item-controls">
+                <div class="quantity-select">
+                    <label for="quantity-brownie">Quantidade:</label>
+                    <select id="quantity-brownie">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Brownie', 'Brownie de chocolate com nozes', 'sobremesa8.jpg', document.getElementById('quantity-brownie').value)">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab-content" id="bebidas">
+    <h2 class="menu-title">Bebidas</h2>
+    <div class="beverages-grid">
+        <!-- 8 Bebidas -->
+        <div class="beverages-item">
+            <img src="/assets/images/bebida1.jpg" alt="" class="beverages-image"/>
+            <div class="beverages-name">Suco de Laranja</div>
+            <p class="beverages-detail">Suco natural de laranja.</p>
+            <div class="beverages-controls">
+                <div class="quantity-select">
+                    <label for="quantity-suco">Quantidade:</label>
+                    <select id="quantity-suco">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Suco de Laranja', 'Suco natural de laranja', 'bebida1.jpg', document.getElementById('quantity-suco').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="beverages-item">
+            <img src="/assets/images/bebida2.jpg" alt="" class="beverages-image"/>
+            <div class="beverages-name">Refrigerante</div>
+            <p class="beverages-detail">Refrigerante de cola.</p>
+            <div class="beverages-controls">
+                <div class="quantity-select">
+                    <label for="quantity-refrigerante">Quantidade:</label>
+                    <select id="quantity-refrigerante">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Refrigerante', 'Refrigerante de cola', 'bebida2.jpg', document.getElementById('quantity-refrigerante').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="beverages-item">
+            <img src="/assets/images/bebida3.jpg" alt="" class="beverages-image"/>
+            <div class="beverages-name">Água</div>
+            <p class="beverages-detail">Água mineral sem gás.</p>
+            <div class="beverages-controls">
+                <div class="quantity-select">
+                    <label for="quantity-agua">Quantidade:</label>
+                    <select id="quantity-agua">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Água', 'Água mineral sem gás', 'bebida3.jpg', document.getElementById('quantity-agua').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="beverages-item">
+            <img src="/assets/images/bebida4.jpg" alt="" class="beverages-image"/>
+            <div class="beverages-name">Café</div>
+            <p class="beverages-detail">Café expresso.</p>
+            <div class="beverages-controls">
+                <div class="quantity-select">
+                    <label for="quantity-cafe">Quantidade:</label>
+                    <select id="quantity-cafe">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Café', 'Café expresso', 'bebida4.jpg', document.getElementById('quantity-cafe').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="beverages-item">
+            <img src="/assets/images/bebida5.jpg" alt="" class="beverages-image"/>
+            <div class="beverages-name">Chá Gelado</div>
+            <p class="beverages-detail">Chá gelado com limão.</p>
+            <div class="beverages-controls">
+                <div class="quantity-select">
+                    <label for="quantity-cha">Quantidade:</label>
+                    <select id="quantity-cha">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Chá Gelado', 'Chá gelado com limão', 'bebida5.jpg', document.getElementById('quantity-cha').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="beverages-item">
+            <img src="/assets/images/bebida6.jpg" alt="" class="beverages-image"/>
+            <div class="beverages-name">Smoothie de Morango</div>
+            <p class="beverages-detail">Smoothie de morango com banana.</p>
+            <div class="beverages-controls">
+                <div class="quantity-select">
+                    <label for="quantity-smoothie">Quantidade:</label>
+                    <select id="quantity-smoothie">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Smoothie de Morango', 'Smoothie de morango com banana', 'bebida6.jpg', document.getElementById('quantity-smoothie').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="beverages-item">
+            <img src="/assets/images/bebida7.jpg" alt="" class="beverages-image"/>
+            <div class="beverages-name">Milkshake</div>
+            <p class="beverages-detail">Milkshake de chocolate.</p>
+            <div class="beverages-controls">
+                <div class="quantity-select">
+                    <label for="quantity-milkshake">Quantidade:</label>
+                    <select id="quantity-milkshake">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Milkshake', 'Milkshake de chocolate', 'bebida7.jpg', document.getElementById('quantity-milkshake').value)">Adicionar</button>
+            </div>
+        </div>
+        <div class="beverages-item">
+            <img src="/assets/images/bebida8.jpg" alt="" class="beverages-image"/>
+            <div class="beverages-name">Vinho Tinto</div>
+            <p class="beverages-detail">Vinho tinto seco.</p>
+            <div class="beverages-controls">
+                <div class="quantity-select">
+                    <label for="quantity-vinho">Quantidade:</label>
+                    <select id="quantity-vinho">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart('Vinho Tinto', 'Vinho tinto seco', 'bebida8.jpg', document.getElementById('quantity-vinho').value)">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIM DO MENU CONTENT -->
+
+<!-- FOOTER -->
+<footer class="footer">
+    <p>&copy; 2024 SIH - Todos os direitos reservados.</p>
+</footer>
+<!-- FIM DO FOOTER -->
+
+<!-- CART MODAL -->
+<div id="cart-modal" class="cart-modal">
+    <div class="cart-modal-content">
+        <h2 class="modal-title">Seu Carrinho</h2>
+        <div id="cart-items"></div>
+        <div class="modal-actions">
+            <button onclick="closeCart()">Fechar</button>
+            <button onclick="proceedToCheckout()">Finalizar Pedido</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let cart = [];
+    let cartCounter = document.getElementById('cart-counter');
+    let cartModal = document.getElementById('cart-modal');
+    let cartItems = document.getElementById('cart-items');
+
+    function openTab(tabName) {
+        let tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.getElementById(tabName).classList.add('active');
+
+        let tabLinks = document.querySelectorAll('.tab-link');
+        tabLinks.forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelector(`.tab-link[onclick="openTab('${tabName}')"]`).classList.add('active');
+    }
+
+    function addToCart(name, description, image, quantity) {
+        let itemIndex = cart.findIndex(item => item.name === name);
+        if (itemIndex > -1) {
+            // Se o item já está no carrinho, atualiza a quantidade
+            cart[itemIndex].quantity = parseInt(cart[itemIndex].quantity) + parseInt(quantity);
+        } else {
+            // Se o item não está no carrinho, adiciona um novo
+            cart.push({
+                name: name,
+                description: description,
+                image: image,
+                quantity: parseInt(quantity)
+            });
+        }
+        updateCart();
+        Toastify({
+            text: `${name} adicionado ao carrinho`,
+            duration: 3000,
+            backgroundColor: "#28a745"
+        }).showToast();
+    }
+
+    function updateCart() {
+        cartCounter.textContent = cart.length;
+        cartItems.innerHTML = '';
+
+        cart.forEach((item, index) => {
+            cartItems.innerHTML += `
+                <div class="cart-item">
+                    <img src="/assets/images/${item.image}" alt="" class="cart-item-image"/>
+                    <div class="cart-item-details">
+                        <h4>${item.name}</h4>
+                        <p>${item.description}</p>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="changeQuantity(${index}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeFromCart(${index})">Remover</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function changeQuantity(index, change) {
+        cart[index].quantity += change;
+        if (cart[index].quantity <= 0) {
+            cart.splice(index, 1); // Remove o item se a quantidade for 0 ou menor
+        }
+        updateCart();
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1); // Remove o item do carrinho
+        updateCart();
+    }
+
+    function openCart() {
+        cartModal.style.display = 'flex';
+    }
+
+    function closeCart() {
+        cartModal.style.display = 'none';
+    }
+
+    function proceedToCheckout() {
+        closeCart();
+        // Adiciona a lógica para prosseguir com o checkout
+        alert('Função de checkout ainda não implementada.');
+    }
+
+    document.getElementById('cart-btn').addEventListener('click', openCart);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+    // Função para obter o dia da semana
+    function getDayOfWeek() {
+        const today = new Date();
+        return today.getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
+    }
+
+    // Função para selecionar e exibir os itens do cardápio com base no dia da semana
+    function selectMenuForDay() {
+        const dayOfWeek = getDayOfWeek();
+
+        // Definindo os arrays para cada dia da semana para pratos e sobremesas
+        const menuSemana = {
+            0: { // Domingo
+                pratos: [
+                    { name: 'Frango Grelhado', description: 'Frango grelhado com legumes.', image: 'prato1.jpg' },
+                    { name: 'Feijoada', description: 'Feijoada completa com arroz.', image: 'prato2.jpg' },
+                    { name: 'Lasanha de Queijo', description: 'Lasanha de queijo com molho branco.', image: 'prato3.jpg' },
+                    { name: 'Salada Caesar', description: 'Salada Caesar com frango.', image: 'prato4.jpg' },
+                    { name: 'Bife à Parmegiana', description: 'Bife à parmegiana com arroz e batata.', image: 'prato5.jpg' },
+                    { name: 'Peixe Assado', description: 'Peixe assado com batatas.', image: 'prato6.jpg' },
+                    { name: 'Strogonoff de Carne', description: 'Strogonoff de carne com arroz e batata palha.', image: 'prato7.jpg' },
+                    { name: 'Risoto de Camarão', description: 'Risoto de camarão com temperos especiais.', image: 'prato8.jpg' }
+                ],
+                sobremesas: [
+                    { name: 'Pudim', description: 'Pudim de leite condensado.', image: 'sobremesa1.jpg' },
+                    { name: 'Torta de Limão', description: 'Torta de limão com cobertura de merengue.', image: 'sobremesa2.jpg' },
+                    { name: 'Brigadeiro', description: 'Brigadeiro tradicional.', image: 'sobremesa3.jpg' },
+                    { name: 'Mousse de Maracujá', description: 'Mousse de maracujá com cobertura de chocolate.', image: 'sobremesa4.jpg' },
+                    { name: 'Cheesecake de Morango', description: 'Cheesecake com cobertura de morango.', image: 'sobremesa5.jpg' },
+                    { name: 'Bolo de Cenoura', description: 'Bolo de cenoura com cobertura de chocolate.', image: 'sobremesa6.jpg' },
+                    { name: 'Sorvete', description: 'Sorvete de baunilha com calda de chocolate.', image: 'sobremesa7.jpg' },
+                    { name: 'Brownie', description: 'Brownie de chocolate com nozes.', image: 'sobremesa8.jpg' }
+                ]
+            },
+            1: { // Segunda-feira
+                pratos: [
+                    { name: 'Lasanha de Carne', description: 'Lasanha de carne com molho vermelho.', image: 'prato9.jpg' },
+                    { name: 'Salada Grega', description: 'Salada com queijo feta e azeitonas.', image: 'prato10.jpg' },
+                    { name: 'Bife com Fritas', description: 'Bife grelhado com batatas fritas.', image: 'prato11.jpg' },
+                    { name: 'Espaguete à Bolonhesa', description: 'Espaguete com molho de carne.', image: 'prato12.jpg' },
+                    { name: 'Quiche de Alho Poró', description: 'Quiche com alho poró e queijo.', image: 'prato13.jpg' },
+                    { name: 'Frango à Parmegiana', description: 'Frango empanado com molho e queijo.', image: 'prato14.jpg' },
+                    { name: 'Camarão na Moranga', description: 'Camarão servido dentro de uma moranga.', image: 'prato15.jpg' },
+                    { name: 'Filé de Peixe', description: 'Filé de peixe grelhado com legumes.', image: 'prato16.jpg' }
+                ],
+                sobremesas: [
+                    { name: 'Torta de Maçã', description: 'Torta de maçã com canela.', image: 'sobremesa9.jpg' },
+                    { name: 'Pavê de Chocolate', description: 'Pavê com camadas de chocolate.', image: 'sobremesa10.jpg' },
+                    { name: 'Tiramisu', description: 'Sobremesa italiana com café.', image: 'sobremesa11.jpg' },
+                    { name: 'Rocambole', description: 'Rocambole recheado com doce de leite.', image: 'sobremesa12.jpg' },
+                    { name: 'Torta Holandesa', description: 'Torta com creme e chocolate.', image: 'sobremesa13.jpg' },
+                    { name: 'Bolo de Coco', description: 'Bolo de coco com cobertura de leite condensado.', image: 'sobremesa14.jpg' },
+                    { name: 'Sorvete de Morango', description: 'Sorvete com pedaços de morango.', image: 'sobremesa15.jpg' },
+                    { name: 'Mousse de Maracujá', description: 'Mousse leve de maracujá.', image: 'sobremesa16.jpg' }
+                ]
+            },
+            // Adicionar mais dias da semana conforme necessário
+        };
+
+        // Bebidas constantes para todos os dias
+        const bebidas = [
+            { name: 'Suco de Laranja', description: 'Suco natural de laranja.', image: 'bebida1.jpg' },
+            { name: 'Refrigerante', description: 'Refrigerante de cola.', image: 'bebida2.jpg' },
+            { name: 'Água', description: 'Água mineral sem gás.', image: 'bebida3.jpg' },
+            { name: 'Café', description: 'Café expresso.', image: 'bebida4.jpg' },
+            { name: 'Chá Gelado', description: 'Chá gelado com limão.', image: 'bebida5.jpg' },
+            { name: 'Smoothie de Morango', description: 'Smoothie de morango com banana.', image: 'bebida6.jpg' },
+            { name: 'Milkshake', description: 'Milkshake de chocolate.', image: 'bebida7.jpg' },
+            { name: 'Vinho Tinto', description: 'Vinho tinto seco.', image: 'bebida8.jpg' }
+        ];
+
+        const menuHoje = menuSemana[dayOfWeek];
+
+        // Atualiza o cardápio com as opções do dia para pratos e sobremesas, e bebidas constantes
+        updateMenu('pratos', menuHoje.pratos);
+        updateMenu('sobremesas', menuHoje.sobremesas);
+        updateMenu('bebidas', bebidas);
+    }
+
+    // Função para atualizar a interface do cardápio
+    function updateMenu(category, items) {
+        const menuContainer = document.querySelector(`#${category} .menu-grid`);
+        menuContainer.innerHTML = '';
+
+        items.forEach(item => {
+            menuContainer.innerHTML += `
+                <div class="menu-item">
+                    <img src="/assets/images/${item.image}" alt="${item.name}" class="menu-item-image"/>
+                    <div class="item-title">${item.name}</div>
+                    <p class="item-description">${item.description}</p>
+                    <div class="item-controls">
+                        <div class="quantity-select">
+                            <label for="quantity-${item.name.toLowerCase().replace(/\s/g, '')}">Quantidade:</label>
+                            <select id="quantity-${item.name.toLowerCase().replace(/\s/g, '')}">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="addToCart('${item.name}', '${item.description}', '${item.image}', document.getElementById('quantity-${item.name.toLowerCase().replace(/\s/g, '')}').value)">Adicionar</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // Atualiza o cardápio ao carregar a página
+    selectMenuForDay();
+
+    // Atualiza o cardápio à meia-noite
+    setInterval(() => {
+        const now = new Date();
+        if (now.getHours() === 0 && now.getMinutes() === 0) {
+            selectMenuForDay();
+        }
+    }, 60000); // Verifica a cada minuto
+
+</script>
+
+
+</body>
+</html>
